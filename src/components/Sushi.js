@@ -1,23 +1,30 @@
-import React from "react";
+import React, { useState } from "react"
 
-function Sushi(props) {
-  return (
-    <div className="sushi">
-      <div className="plate" onClick={/* Give me a callback! */ null}>
-        {/* Tell me if this sushi has been eaten! */}
-        {false ? null : (
-          <img
-            src={/* Give me an image source! */ null}
-            alt={/* Give me a name! */ "Sushi"}
-            width="100%"
-          />
-        )}
+function Sushi({ img_url, name, price, id, spendMoney, handleIsEaten }) {
+   const [isEaten, setIsEaten] = useState(false)
+
+   const API = "http://localhost:3001/sushis/"
+
+   const handleEat = value => {
+      setIsEaten(true)
+      spendMoney(value)
+      handleIsEaten(id)
+
+      // fetch(API + id, { method: "DELETE" })
+      //    .then(r => r.json())
+      //    .then(console.log)
+   }
+
+   return (
+      <div className="sushi">
+         <div className="plate" onClick={isEaten ? null : () => handleEat(price)}>
+            {isEaten ? null : <img src={img_url} alt={name} width="100%" />}
+         </div>
+         <h4 className="sushi-details">
+            {name} - ${price}
+         </h4>
       </div>
-      <h4 className="sushi-details">
-        {/* Give me a name! */} - ${/* Give me a price! */}
-      </h4>
-    </div>
-  );
+   )
 }
 
-export default Sushi;
+export default Sushi
